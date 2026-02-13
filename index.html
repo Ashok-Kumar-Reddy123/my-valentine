@@ -2,169 +2,721 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You ❤️</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You've Got Mail 💌</title>
 <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #ffe6eb, #fff);
-  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
+}
+
+.stage {
+  display: none;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.stage.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
 .card {
   background: white;
   padding: 40px;
-  border-radius: 20px;
+  border-radius: 25px;
   text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-  max-width: 420px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+  max-width: 500px;
   width: 90%;
   position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  animation: float 6s ease-in-out infinite;
 }
 
 h1 {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 2.2em;
+}
+
+h2 {
+  color: #ff4d6d;
+  margin: 20px 0;
+  font-size: 1.8em;
 }
 
 p {
-  color: #555;
+  color: #666;
+  line-height: 1.8;
+  margin: 15px 0;
+  font-size: 1.1em;
+}
+
+button {
+  padding: 15px 35px;
+  font-size: 18px;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: bold;
+  margin: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, #ff4d6d, #ff758c);
+  color: white;
+  box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
+}
+
+.primary-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
+}
+
+.secondary-btn {
+  background: #f0f0f0;
+  color: #333;
+}
+
+.envelope {
+  width: 200px;
+  height: 150px;
+  margin: 30px auto;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.envelope:hover {
+  transform: scale(1.1);
+  animation: shake 0.5s;
+}
+
+.envelope-body {
+  width: 200px;
+  height: 120px;
+  background: #ff758c;
+  border-radius: 10px;
+  position: relative;
+}
+
+.envelope-flap {
+  width: 0;
+  height: 0;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-top: 80px solid #ff4d6d;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: top;
+  transition: transform 0.5s;
+}
+
+.envelope.opened .envelope-flap {
+  transform: rotateX(180deg);
+}
+
+.letter {
+  position: absolute;
+  width: 160px;
+  height: 100px;
+  background: white;
+  top: 20px;
+  left: 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #ff4d6d;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  transition: top 0.5s;
+}
+
+.envelope.opened .letter {
+  top: -30px;
 }
 
 .buttons {
   margin-top: 30px;
   position: relative;
-  height: 60px;
-}
-
-button {
-  padding: 12px 25px;
-  font-size: 16px;
-  border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-#yesBtn {
-  background: #ff4d6d;
-  color: white;
-  margin-right: 10px;
-}
-
-#yesBtn:hover {
-  transform: scale(1.05);
+  min-height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
 #noBtn {
-  background: #eee;
   position: absolute;
+  transition: all 0.3s ease;
+}
+
+.hearts {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  top: 0;
+  left: 0;
+}
+
+.heart {
+  position: absolute;
+  font-size: 30px;
+  animation: floatHeart 4s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes floatHeart {
+  0% { 
+    opacity: 0;
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% { 
+    opacity: 0;
+    transform: translateY(-100vh) rotate(360deg);
+  }
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4d6d, #ff758c);
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.quiz-option {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 15px;
+  background: #f8f9fa;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 16px;
+  text-align: left;
+}
+
+.quiz-option:hover {
+  background: #fff;
+  border-color: #ff758c;
+  transform: translateX(10px);
+}
+
+.quiz-option.wrong {
+  animation: shake 0.5s;
+  background: #ffebee;
+  border-color: #f44336;
+}
+
+.quiz-option.correct {
+  background: #e8f5e9;
+  border-color: #4caf50;
+}
+
+.countdown {
+  font-size: 3em;
+  font-weight: bold;
+  color: #ff4d6d;
+  margin: 30px 0;
+  animation: pulse 1s infinite;
+}
+
+.love-meter {
+  width: 100%;
+  height: 40px;
+  background: #f0f0f0;
+  border-radius: 20px;
+  margin: 20px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.love-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #ff4d6d, #ff758c, #ffc4d0);
+  border-radius: 20px;
+  transition: width 2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 15px;
+  color: white;
+  font-weight: bold;
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: #ff4d6d;
+  position: absolute;
+  animation: confettiFall 3s ease-out forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(100vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.typing-text {
+  overflow: hidden;
+  border-right: 3px solid #ff4d6d;
+  white-space: nowrap;
+  margin: 0 auto;
+  animation: typing 3s steps(40) 1s forwards, blink 0.75s step-end infinite;
+  max-width: 0;
+}
+
+@keyframes typing {
+  from { max-width: 0; }
+  to { max-width: 100%; }
+}
+
+@keyframes blink {
+  50% { border-color: transparent; }
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-#realLoveBtn {
-  margin-top: 15px;
-  background:#ff4d6d;
-  color:white;
-  padding:10px 20px;
-  border:none;
-  border-radius:20px;
-  cursor:pointer;
-}
-
-#realLoveBtn:hover {
-  transform: scale(1.05);
-}
-
-#finalMessage {
-  margin-top:20px;
-  font-size:15px;
-  display:none;
-  line-height:1.6;
+@media (max-width: 600px) {
+  h1 { font-size: 1.8em; }
+  h2 { font-size: 1.4em; }
+  p { font-size: 1em; }
+  button { padding: 12px 25px; font-size: 16px; }
 }
 </style>
 </head>
-
 <body>
 
-<div class="card" id="question">
-  <h1>Hey Navya 💖</h1>
-  <p>I’ve been wanting to ask you something…</p>
-  <h2>Will you be my Valentine? 💕</h2>
-  <p><small>Choose wisely (the “No” button is shy 🙈)</small></p>
+<!-- Hearts Background -->
+<div class="hearts" id="heartsContainer"></div>
 
-  <div class="buttons">
-    <button id="yesBtn">YES ❤️</button>
-    <button id="noBtn">NO 😶</button>
+<!-- Stage 1: Email Envelope -->
+<div class="stage active" id="stage1">
+  <div class="card">
+    <h1>📬 You've Got Special Mail!</h1>
+    <p>Navya, click the envelope below to open your surprise...</p>
+    <div class="envelope" id="envelope" onclick="openEnvelope()">
+      <div class="envelope-flap"></div>
+      <div class="letter">Click to open! 💌</div>
+      <div class="envelope-body"></div>
+    </div>
+    <p style="font-size: 0.9em; color: #999; margin-top: 20px;">
+      <em>Hint: It's not a bill 😄</em>
+    </p>
   </div>
 </div>
 
-<div class="card hidden" id="success">
-  <h1>YAY!!! 💖🥹</h1>
-  <p>Best decision ever.</p>
-  <p>I’m really lucky to have you.</p>
-  <h2>I love you ❤️</h2>
+<!-- Stage 2: Loading Screen -->
+<div class="stage" id="stage2">
+  <div class="card">
+    <h1>⏳ Loading Your Surprise...</h1>
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressBar"></div>
+    </div>
+    <p id="loadingText">Preparing something special...</p>
+    <div class="countdown" id="countdown">3</div>
+  </div>
+</div>
 
-  <p style="margin-top:20px; font-size:15px; line-height:1.6;">
-    Ani… I know konchem force chesi YES click cheyinchanu 😌  
-    Kaani nijamga nuvvante chaala istam ra ❤️  
-    Ah YES ni nijamga istam tho click chesuntey…  
-    kindha unna button click chey.
-  </p>
+<!-- Stage 3: Quiz Time -->
+<div class="stage" id="stage3">
+  <div class="card">
+    <h1>🎯 Quick Quiz Time!</h1>
+    <p>Before we proceed, prove you're the real Navya 😏</p>
+    <h2 id="quizQuestion">What's my favorite thing about you?</h2>
+    <div id="quizOptions">
+      <button class="quiz-option" onclick="checkQuiz(this, false)">
+        A) Your ability to ignore my messages 📱
+      </button>
+      <button class="quiz-option" onclick="checkQuiz(this, false)">
+        B) The way you steal my hoodies 👕
+      </button>
+      <button class="quiz-option" onclick="checkQuiz(this, true)">
+        C) Everything about you ❤️
+      </button>
+      <button class="quiz-option" onclick="checkQuiz(this, false)">
+        D) Your Netflix binge skills 📺
+      </button>
+    </div>
+  </div>
+</div>
 
-  <button id="realLoveBtn">
-    Click here if it was real ❤️
-  </button>
+<!-- Stage 4: Love Meter -->
+<div class="stage" id="stage4">
+  <div class="card">
+    <h1>💖 Calculating Love Level...</h1>
+    <p>Measuring how much I love you...</p>
+    <div class="love-meter">
+      <div class="love-fill" id="loveFill">0%</div>
+    </div>
+    <p id="loveStatus">Initiating scan...</p>
+  </div>
+</div>
 
-  <p id="finalMessage">
-    Ekkada vadili velthavo ani konchem bayam ga untundi… 🥺  
-    But anyway naku ee Valentine’s Day ante specific day la anipinchadhu.  
-    Manaki ochhe prathi Valentine okela chuskovali…  
-    not just on one particular day. 💞  
+<!-- Stage 5: The Big Question (with moving NO button) -->
+<div class="stage" id="stage5">
+  <div class="card">
+    <h1>Hey Navya 💖</h1>
+    <p>I've been wanting to ask you something important...</p>
+    <h2>Will you be my Valentine? 💕</h2>
+    <p><small>(The "NO" button is camera shy 📸🙈)</small></p>
+    <div class="buttons">
+      <button class="primary-btn" id="yesBtn" onclick="celebrate()">
+        YES PLEASE ❤️
+      </button>
+      <button class="secondary-btn" id="noBtn">
+        NO 😶
+      </button>
+    </div>
+    <p style="margin-top: 30px; font-size: 0.9em; color: #999;">
+      <em>Click attempts on NO: <span id="noCount">0</span> 😂</em>
+    </p>
+  </div>
+</div>
 
-    Happy Valentine’s Day ra ❤️✨
-  </p>
+<!-- Stage 6: Celebration -->
+<div class="stage" id="stage6">
+  <div class="card">
+    <h1>🎉 YAY!!! Best Day Ever! 🥹</h1>
+    <p style="font-size: 1.2em; margin: 20px 0;">
+      You just made me the happiest person alive! 
+    </p>
+    <h2>💝 I Love You Ra 💝</h2>
+    <p style="margin-top: 25px; line-height: 1.8;">
+      Okay okay, I know konchem force chesi YES click cheyinchanu 😌
+      <br><br>
+      But you know what? Nuvvante chaala istam ra ❤️
+      <br><br>
+      If that YES was from your heart too...
+      <br>
+      click the button below 👇
+    </p>
+    <button class="primary-btn" onclick="revealFinal()" style="margin-top: 20px;">
+      It was real ❤️ (Click me!)
+    </button>
+  </div>
+</div>
+
+<!-- Stage 7: Final Message -->
+<div class="stage" id="stage7">
+  <div class="card">
+    <h1 class="typing-text" id="typingText">A Message From My Heart...</h1>
+    <div id="finalContent" style="display: none;">
+      <p style="margin-top: 30px; line-height: 2; font-size: 1.1em;">
+        Ekkada vadili velthavo ani konchem bayam ga untundi... 🥺
+        <br><br>
+        But honestly, naku Valentine's Day ante oka particular day matrame kaadhu.
+        <br><br>
+        <strong style="color: #ff4d6d;">
+          Every day with you is Valentine's Day ra ❤️
+        </strong>
+        <br><br>
+        Manaki ochhe prathi roju okela celebrate cheskovali...
+        <br>
+        not just one day in a year. 💞
+        <br><br>
+        You make my ordinary days extraordinary ✨
+        <br><br>
+        <em style="font-size: 1.3em; color: #ff4d6d;">
+          Happy Valentine's Day, My Love! 💖
+        </em>
+      </p>
+      <button class="primary-btn" onclick="replayJourney()" style="margin-top: 30px;">
+        🔄 Relive This Moment
+      </button>
+    </div>
+  </div>
 </div>
 
 <script>
-const noBtn = document.getElementById("noBtn");
-const yesBtn = document.getElementById("yesBtn");
-const question = document.getElementById("question");
-const success = document.getElementById("success");
-const realLoveBtn = document.getElementById("realLoveBtn");
-const finalMessage = document.getElementById("finalMessage");
-
-const messages = [
-  "Wait… think again 😭",
-  "Are you sure? 👀",
-  "Hey don’t click me 🥺",
-  "Wrong choice 😜",
-  "Nice try 😌"
+let currentStage = 1;
+let noClickCount = 0;
+const noMessages = [
+  "Oops! Wrong button 😅",
+  "Try again 👀",
+  "Still the wrong one 🙈",
+  "Come on now... 😏",
+  "You're doing this on purpose! 😂",
+  "Last chance before I cry 🥺",
+  "Fine, keep trying 😤",
+  "I can do this all day! 💪",
+  "Your loss 😌",
+  "Seriously? 🤨"
 ];
 
+// Create floating hearts
+function createHearts() {
+  const container = document.getElementById('heartsContainer');
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.innerHTML = '❤️';
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.animationDelay = Math.random() * 2 + 's';
+    container.appendChild(heart);
+    setTimeout(() => heart.remove(), 4000);
+  }, 300);
+}
+
+// Open envelope animation
+function openEnvelope() {
+  const envelope = document.getElementById('envelope');
+  envelope.classList.add('opened');
+  setTimeout(() => {
+    goToStage(2);
+    startLoading();
+  }, 1000);
+}
+
+// Loading animation
+function startLoading() {
+  const progressBar = document.getElementById('progressBar');
+  const loadingText = document.getElementById('loadingText');
+  const countdown = document.getElementById('countdown');
+  
+  const messages = [
+    "Sprinkling some love dust ✨",
+    "Adding extra cuteness 🥰",
+    "Making it perfect for you 💝",
+    "Almost there... 🎀"
+  ];
+  
+  let progress = 0;
+  let messageIndex = 0;
+  let count = 3;
+  
+  const interval = setInterval(() => {
+    progress += 25;
+    progressBar.style.width = progress + '%';
+    loadingText.textContent = messages[messageIndex];
+    messageIndex++;
+    count--;
+    countdown.textContent = count;
+    
+    if (progress >= 100) {
+      clearInterval(interval);
+      setTimeout(() => goToStage(3), 500);
+    }
+  }, 1000);
+}
+
+// Quiz
+function checkQuiz(button, isCorrect) {
+  const options = document.querySelectorAll('.quiz-option');
+  options.forEach(opt => opt.style.pointerEvents = 'none');
+  
+  if (isCorrect) {
+    button.classList.add('correct');
+    setTimeout(() => {
+      goToStage(4);
+      animateLoveMeter();
+    }, 1000);
+  } else {
+    button.classList.add('wrong');
+    setTimeout(() => {
+      button.classList.remove('wrong');
+      options.forEach(opt => opt.style.pointerEvents = 'auto');
+    }, 500);
+  }
+}
+
+// Love meter animation
+function animateLoveMeter() {
+  const loveFill = document.getElementById('loveFill');
+  const loveStatus = document.getElementById('loveStatus');
+  
+  const statuses = [
+    "Analyzing feelings...",
+    "Measuring affection...",
+    "Calculating cuddles...",
+    "Processing kisses...",
+    "Computing love..."
+  ];
+  
+  let percentage = 0;
+  let statusIndex = 0;
+  
+  const interval = setInterval(() => {
+    percentage += 20;
+    loveFill.style.width = percentage + '%';
+    loveFill.textContent = percentage + '%';
+    loveStatus.textContent = statuses[statusIndex];
+    statusIndex++;
+    
+    if (percentage >= 100) {
+      clearInterval(interval);
+      loveFill.textContent = '∞% (Infinite!)';
+      loveStatus.innerHTML = '<strong style="color: #ff4d6d; font-size: 1.2em;">Error: Love too strong to measure! 💕</strong>';
+      setTimeout(() => goToStage(5), 2000);
+    }
+  }, 600);
+}
+
+// Moving NO button
+const noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("mouseover", () => {
-  const x = Math.random() * 250;
-  const y = Math.random() * 40;
+  noClickCount++;
+  document.getElementById('noCount').textContent = noClickCount;
+  
+  const maxX = window.innerWidth - 150;
+  const maxY = window.innerHeight - 100;
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+  
+  noBtn.style.position = 'fixed';
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
-  noBtn.textContent = messages[Math.floor(Math.random() * messages.length)];
+  noBtn.textContent = noMessages[Math.min(noClickCount - 1, noMessages.length - 1)];
+  
+  // Shake the YES button to attract attention
+  document.getElementById('yesBtn').style.animation = 'bounce 0.5s';
+  setTimeout(() => {
+    document.getElementById('yesBtn').style.animation = '';
+  }, 500);
 });
 
-yesBtn.addEventListener("click", () => {
-  question.classList.add("hidden");
-  success.classList.remove("hidden");
-});
+// Celebration
+function celebrate() {
+  // Create confetti
+  for (let i = 0; i < 100; i++) {
+    setTimeout(() => {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + '%';
+      confetti.style.top = '-10px';
+      confetti.style.background = ['#ff4d6d', '#ff758c', '#ffc4d0', '#764ba2'][Math.floor(Math.random() * 4)];
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 3000);
+    }, i * 30);
+  }
+  
+  setTimeout(() => goToStage(6), 1000);
+}
 
-realLoveBtn.addEventListener("click", () => {
-  finalMessage.style.display = "block";
-  realLoveBtn.style.display = "none";
-});
+// Reveal final message
+function revealFinal() {
+  goToStage(7);
+  setTimeout(() => {
+    document.getElementById('finalContent').style.display = 'block';
+  }, 3000);
+}
+
+// Navigate stages
+function goToStage(stageNum) {
+  document.querySelectorAll('.stage').forEach(stage => {
+    stage.classList.remove('active');
+  });
+  document.getElementById('stage' + stageNum).classList.add('active');
+  currentStage = stageNum;
+}
+
+// Replay
+function replayJourney() {
+  noClickCount = 0;
+  document.getElementById('noCount').textContent = '0';
+  goToStage(1);
+  document.getElementById('envelope').classList.remove('opened');
+}
+
+// Initialize
+window.onload = function() {
+  createHearts();
+};
 </script>
 
 </body>
