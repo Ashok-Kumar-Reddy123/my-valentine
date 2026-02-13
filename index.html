@@ -61,16 +61,33 @@ body {
   50% { transform: translateY(-20px); }
 }
 
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
 .card {
   background: white;
   padding: 40px;
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 30px 60px rgba(0,0,0,0.3);
-  max-width: 500px;
+  max-width: 550px;
   width: 90%;
   position: relative;
   overflow: hidden;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.card::-webkit-scrollbar-thumb {
+  background: #ff758c;
+  border-radius: 10px;
 }
 
 .card::before {
@@ -93,7 +110,8 @@ h1 {
 h2 {
   color: #ff4d6d;
   margin: 20px 0;
-  font-size: 1.8em;
+  font-size: 1.6em;
+  line-height: 1.4;
 }
 
 p {
@@ -282,8 +300,9 @@ button:hover::before {
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s;
-  font-size: 16px;
+  font-size: 15px;
   text-align: left;
+  line-height: 1.5;
 }
 
 .quiz-option:hover {
@@ -301,6 +320,20 @@ button:hover::before {
 .quiz-option.correct {
   background: #e8f5e9;
   border-color: #4caf50;
+  animation: pulse 0.5s;
+}
+
+.quiz-counter {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #ff4d6d, #ff758c);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
 }
 
 .countdown {
@@ -368,15 +401,22 @@ button:hover::before {
   50% { border-color: transparent; }
 }
 
+.skull {
+  font-size: 40px;
+  animation: wiggle 2s ease-in-out infinite;
+  display: inline-block;
+}
+
 .hidden {
   display: none !important;
 }
 
 @media (max-width: 600px) {
   h1 { font-size: 1.8em; }
-  h2 { font-size: 1.4em; }
+  h2 { font-size: 1.3em; }
   p { font-size: 1em; }
   button { padding: 12px 25px; font-size: 16px; }
+  .quiz-option { font-size: 14px; padding: 12px; }
 }
 </style>
 </head>
@@ -396,7 +436,7 @@ button:hover::before {
       <div class="envelope-body"></div>
     </div>
     <p style="font-size: 0.9em; color: #999; margin-top: 20px;">
-      <em>Hint: It's not a bill 😄</em>
+      <em>Hint: It's not a bill... or is it? 😏</em>
     </p>
   </div>
 </div>
@@ -413,26 +453,19 @@ button:hover::before {
   </div>
 </div>
 
-<!-- Stage 3: Quiz Time -->
+<!-- Stage 3: Multi-Round Quiz -->
 <div class="stage" id="stage3">
   <div class="card">
-    <h1>🎯 Quick Quiz Time!</h1>
-    <p>Before we proceed, prove you're the real Navya 😏</p>
-    <h2 id="quizQuestion">What's my favorite thing about you?</h2>
-    <div id="quizOptions">
-      <button class="quiz-option" onclick="checkQuiz(this, false)">
-        A) Your ability to ignore my messages 📱
-      </button>
-      <button class="quiz-option" onclick="checkQuiz(this, false)">
-        B) The way you steal my hoodies 👕
-      </button>
-      <button class="quiz-option" onclick="checkQuiz(this, true)">
-        C) Everything about you ❤️
-      </button>
-      <button class="quiz-option" onclick="checkQuiz(this, false)">
-        D) Your Netflix binge skills 📺
-      </button>
+    <div class="quiz-counter">
+      Question <span id="quizNumber">1</span>/5
     </div>
+    <h1>🎯 Quiz Time!</h1>
+    <p>Prove you're the real Navya (and that you know me) 😏</p>
+    <h2 id="quizQuestion"></h2>
+    <div id="quizOptions"></div>
+    <p style="font-size: 0.9em; color: #999; margin-top: 20px;">
+      <em id="quizHint"></em>
+    </p>
   </div>
 </div>
 
@@ -448,13 +481,13 @@ button:hover::before {
   </div>
 </div>
 
-<!-- Stage 5: The Big Question (with moving NO button) -->
+<!-- Stage 5: The Big Question -->
 <div class="stage" id="stage5">
   <div class="card">
     <h1>Hey Navya 💖</h1>
-    <p>I've been wanting to ask you something important...</p>
+    <p>After all that, I've been wanting to ask you something important...</p>
     <h2>Will you be my Valentine? 💕</h2>
-    <p><small>(The "NO" button is camera shy 📸🙈)</small></p>
+    <p><small>(The "NO" button has commitment issues 😂)</small></p>
     <div class="buttons">
       <button class="primary-btn" id="yesBtn" onclick="celebrate()">
         YES PLEASE ❤️
@@ -464,7 +497,7 @@ button:hover::before {
       </button>
     </div>
     <p style="margin-top: 30px; font-size: 0.9em; color: #999;">
-      <em>Click attempts on NO: <span id="noCount">0</span> 😂</em>
+      <em>Failed attempts to reject me: <span id="noCount">0</span> 😂</em>
     </p>
   </div>
 </div>
@@ -480,6 +513,10 @@ button:hover::before {
     <p style="margin-top: 25px; line-height: 1.8;">
       Okay okay, I know konchem force chesi YES click cheyinchanu 😌
       <br><br>
+      The quiz was rigged... the NO button was programmed to run... 
+      <br>
+      typical programmer manipulation 🤓
+      <br><br>
       But you know what? Nuvvante chaala istam ra ❤️
       <br><br>
       If that YES was from your heart too...
@@ -487,7 +524,7 @@ button:hover::before {
       click the button below 👇
     </p>
     <button class="primary-btn" onclick="revealFinal()" style="margin-top: 20px;">
-      It was real ❤️ (Click me!)
+      It was real ❤️ (No takebacks!)
     </button>
   </div>
 </div>
@@ -515,9 +552,13 @@ button:hover::before {
         <em style="font-size: 1.3em; color: #ff4d6d;">
           Happy Valentine's Day, My Love! 💖
         </em>
+        <br><br>
+        <small style="color: #999;">
+          P.S. - Thanks for completing my rigged quiz 😂
+        </small>
       </p>
       <button class="primary-btn" onclick="replayJourney()" style="margin-top: 30px;">
-        🔄 Relive This Moment
+        🔄 Relive This Chaos
       </button>
     </div>
   </div>
@@ -526,17 +567,78 @@ button:hover::before {
 <script>
 let currentStage = 1;
 let noClickCount = 0;
+let currentQuiz = 0;
+
 const noMessages = [
   "Oops! Wrong button 😅",
-  "Try again 👀",
-  "Still the wrong one 🙈",
-  "Come on now... 😏",
-  "You're doing this on purpose! 😂",
-  "Last chance before I cry 🥺",
-  "Fine, keep trying 😤",
-  "I can do this all day! 💪",
-  "Your loss 😌",
-  "Seriously? 🤨"
+  "Are you sure? 👀",
+  "Think about it... 🤔",
+  "Your loss tbh 😏",
+  "I can wait... 💁",
+  "Still waiting... ⏰",
+  "Getting lonely here 🥺",
+  "This is awkward 😬",
+  "Fine, be that way 😤",
+  "My therapist will hear about this 💔"
+];
+
+// Quiz questions with relatable, funny, and dark humor
+const quizQuestions = [
+  {
+    question: "What's my favorite activity when you're talking to me?",
+    options: [
+      "A) Actually listening like a good boyfriend 😇",
+      "B) Nodding while thinking about food 🍕",
+      "C) Pretending my phone died to escape 📱💀",
+      "D) Listening... and planning what to say to make you laugh ❤️"
+    ],
+    correct: 3,
+    hint: "Choose wisely... I'm watching 👀"
+  },
+  {
+    question: "How do I react when you say 'We need to talk'?",
+    options: [
+      "A) Calmly ask what's wrong like a mature adult 😌",
+      "B) Immediately start apologizing for everything since birth 🙏",
+      "C) Fake my own death and start a new life in another country 💀✈️",
+      "D) Panic internally but act cool externally 😰😎"
+    ],
+    correct: 3,
+    hint: "It's the honest one 😅"
+  },
+  {
+    question: "What goes through my mind when you don't reply for 10 minutes?",
+    options: [
+      "A) 'She's probably busy, it's fine' (healthy thinking) 🧘",
+      "B) 'Did I say something wrong? Is she mad? Should I double text?' 😰",
+      "C) 'She's planning my murder, isn't she?' 🔪💀",
+      "D) *Opens WhatsApp 47 times to check if you're online* 📱👁️"
+    ],
+    correct: 1,
+    hint: "I'm not toxic, just... concerned 😬"
+  },
+  {
+    question: "What's my biggest fear in our relationship?",
+    options: [
+      "A) You finding someone better (valid fear) 😢",
+      "B) You discovering my Netflix password has your name in it 🙈",
+      "C) You reading my Google search history: 'how to be funny' 💀",
+      "D) Losing you... but also you finding my cringe old Facebook posts 😱"
+    ],
+    correct: 3,
+    hint: "It's a tie between emotional and digital embarrassment 😂"
+  },
+  {
+    question: "Complete this: 'Navya, you're...'",
+    options: [
+      "A) '...out of my league but somehow stuck with me' 🎯",
+      "B) '...the reason I check my phone every 5 seconds' 📱❤️",
+      "C) '...proof that my standards are too high... in a good way!' 😌",
+      "D) '...everything. Seriously. No pressure though.' 💕😅"
+    ],
+    correct: 3,
+    hint: "The most honest (and slightly desperate) one 😂"
+  }
 ];
 
 // Create floating hearts
@@ -545,7 +647,7 @@ function createHearts() {
   setInterval(() => {
     const heart = document.createElement('div');
     heart.className = 'heart';
-    heart.innerHTML = '❤️';
+    heart.innerHTML = ['❤️', '💕', '💖', '💗', '💝'][Math.floor(Math.random() * 5)];
     heart.style.left = Math.random() * 100 + '%';
     heart.style.animationDelay = Math.random() * 2 + 's';
     container.appendChild(heart);
@@ -572,8 +674,8 @@ function startLoading() {
   const messages = [
     "Sprinkling some love dust ✨",
     "Adding extra cuteness 🥰",
-    "Making it perfect for you 💝",
-    "Almost there... 🎀"
+    "Hiding my cringe jokes 🙈",
+    "Making it perfect for you 💝"
   ];
   
   let progress = 0;
@@ -590,12 +692,34 @@ function startLoading() {
     
     if (progress >= 100) {
       clearInterval(interval);
-      setTimeout(() => goToStage(3), 500);
+      setTimeout(() => {
+        goToStage(3);
+        loadQuiz();
+      }, 500);
     }
   }, 1000);
 }
 
-// Quiz
+// Load quiz question
+function loadQuiz() {
+  const quiz = quizQuestions[currentQuiz];
+  document.getElementById('quizNumber').textContent = currentQuiz + 1;
+  document.getElementById('quizQuestion').textContent = quiz.question;
+  document.getElementById('quizHint').textContent = quiz.hint;
+  
+  const optionsContainer = document.getElementById('quizOptions');
+  optionsContainer.innerHTML = '';
+  
+  quiz.options.forEach((option, index) => {
+    const button = document.createElement('button');
+    button.className = 'quiz-option';
+    button.textContent = option;
+    button.onclick = () => checkQuiz(button, index === quiz.correct);
+    optionsContainer.appendChild(button);
+  });
+}
+
+// Check quiz answer
 function checkQuiz(button, isCorrect) {
   const options = document.querySelectorAll('.quiz-option');
   options.forEach(opt => opt.style.pointerEvents = 'none');
@@ -603,15 +727,28 @@ function checkQuiz(button, isCorrect) {
   if (isCorrect) {
     button.classList.add('correct');
     setTimeout(() => {
-      goToStage(4);
-      animateLoveMeter();
-    }, 1000);
+      currentQuiz++;
+      if (currentQuiz < quizQuestions.length) {
+        loadQuiz();
+        options.forEach(opt => {
+          opt.classList.remove('correct', 'wrong');
+          opt.style.pointerEvents = 'auto';
+        });
+      } else {
+        setTimeout(() => {
+          goToStage(4);
+          animateLoveMeter();
+        }, 1000);
+      }
+    }, 1500);
   } else {
     button.classList.add('wrong');
+    button.innerHTML = button.textContent + " <span class='skull'>💀</span>";
     setTimeout(() => {
       button.classList.remove('wrong');
+      button.innerHTML = button.textContent.replace(" 💀", "");
       options.forEach(opt => opt.style.pointerEvents = 'auto');
-    }, 500);
+    }, 1000);
   }
 }
 
@@ -621,11 +758,11 @@ function animateLoveMeter() {
   const loveStatus = document.getElementById('loveStatus');
   
   const statuses = [
-    "Analyzing feelings...",
-    "Measuring affection...",
-    "Calculating cuddles...",
-    "Processing kisses...",
-    "Computing love..."
+    "Scanning heart rate...",
+    "Measuring cuddle potential...",
+    "Analyzing smile frequency...",
+    "Computing forehead kiss quota...",
+    "Processing love data..."
   ];
   
   let percentage = 0;
@@ -640,9 +777,12 @@ function animateLoveMeter() {
     
     if (percentage >= 100) {
       clearInterval(interval);
-      loveFill.textContent = '∞% (Infinite!)';
-      loveStatus.innerHTML = '<strong style="color: #ff4d6d; font-size: 1.2em;">Error: Love too strong to measure! 💕</strong>';
-      setTimeout(() => goToStage(5), 2000);
+      loveFill.style.width = '100%';
+      setTimeout(() => {
+        loveFill.textContent = '∞%';
+        loveStatus.innerHTML = '<strong style="color: #ff4d6d; font-size: 1.2em;">ERROR: Love exceeds measurable limits! 💕💥</strong>';
+      }, 500);
+      setTimeout(() => goToStage(5), 2500);
     }
   }, 600);
 }
@@ -653,7 +793,7 @@ noBtn.addEventListener("mouseover", () => {
   noClickCount++;
   document.getElementById('noCount').textContent = noClickCount;
   
-  const maxX = window.innerWidth - 150;
+  const maxX = window.innerWidth - 200;
   const maxY = window.innerHeight - 100;
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
@@ -663,7 +803,6 @@ noBtn.addEventListener("mouseover", () => {
   noBtn.style.top = y + "px";
   noBtn.textContent = noMessages[Math.min(noClickCount - 1, noMessages.length - 1)];
   
-  // Shake the YES button to attract attention
   document.getElementById('yesBtn').style.animation = 'bounce 0.5s';
   setTimeout(() => {
     document.getElementById('yesBtn').style.animation = '';
@@ -672,17 +811,17 @@ noBtn.addEventListener("mouseover", () => {
 
 // Celebration
 function celebrate() {
-  // Create confetti
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 150; i++) {
     setTimeout(() => {
       const confetti = document.createElement('div');
       confetti.className = 'confetti';
       confetti.style.left = Math.random() * 100 + '%';
       confetti.style.top = '-10px';
-      confetti.style.background = ['#ff4d6d', '#ff758c', '#ffc4d0', '#764ba2'][Math.floor(Math.random() * 4)];
+      confetti.style.background = ['#ff4d6d', '#ff758c', '#ffc4d0', '#764ba2', '#667eea'][Math.floor(Math.random() * 5)];
+      confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
       document.body.appendChild(confetti);
       setTimeout(() => confetti.remove(), 3000);
-    }, i * 30);
+    }, i * 20);
   }
   
   setTimeout(() => goToStage(6), 1000);
@@ -693,7 +832,7 @@ function revealFinal() {
   goToStage(7);
   setTimeout(() => {
     document.getElementById('finalContent').style.display = 'block';
-  }, 3000);
+  }, 3500);
 }
 
 // Navigate stages
@@ -708,6 +847,7 @@ function goToStage(stageNum) {
 // Replay
 function replayJourney() {
   noClickCount = 0;
+  currentQuiz = 0;
   document.getElementById('noCount').textContent = '0';
   goToStage(1);
   document.getElementById('envelope').classList.remove('opened');
