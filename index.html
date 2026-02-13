@@ -20,6 +20,7 @@ body {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   overflow: hidden;
+  touch-action: manipulation;
 }
 
 .stage {
@@ -33,6 +34,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100vh;
+  padding: 10px;
 }
 
 @keyframes fadeIn {
@@ -69,20 +71,20 @@ body {
 
 .card {
   background: white;
-  padding: 40px;
+  padding: 30px 25px;
   border-radius: 25px;
   text-align: center;
   box-shadow: 0 30px 60px rgba(0,0,0,0.3);
   max-width: 550px;
-  width: 90%;
+  width: 95%;
   position: relative;
   overflow: hidden;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
 }
 
 .card::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .card::-webkit-scrollbar-thumb {
@@ -99,31 +101,35 @@ body {
   height: 200%;
   background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
   animation: float 6s ease-in-out infinite;
+  pointer-events: none;
 }
 
 h1 {
   margin-bottom: 15px;
   color: #333;
-  font-size: 2.2em;
+  font-size: 2em;
+  position: relative;
 }
 
 h2 {
   color: #ff4d6d;
   margin: 20px 0;
-  font-size: 1.6em;
+  font-size: 1.5em;
   line-height: 1.4;
+  position: relative;
 }
 
 p {
   color: #666;
   line-height: 1.8;
   margin: 15px 0;
-  font-size: 1.1em;
+  font-size: 1em;
+  position: relative;
 }
 
 button {
-  padding: 15px 35px;
-  font-size: 18px;
+  padding: 15px 30px;
+  font-size: 17px;
   border: none;
   border-radius: 30px;
   cursor: pointer;
@@ -132,6 +138,7 @@ button {
   margin: 10px;
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 button::before {
@@ -147,7 +154,8 @@ button::before {
   transition: width 0.6s, height 0.6s;
 }
 
-button:hover::before {
+button:hover::before,
+button:active::before {
   width: 300px;
   height: 300px;
 }
@@ -158,7 +166,8 @@ button:hover::before {
   box-shadow: 0 10px 25px rgba(255, 77, 109, 0.4);
 }
 
-.primary-btn:hover {
+.primary-btn:hover,
+.primary-btn:active {
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 15px 35px rgba(255, 77, 109, 0.6);
 }
@@ -169,22 +178,23 @@ button:hover::before {
 }
 
 .envelope {
-  width: 200px;
-  height: 150px;
+  width: 180px;
+  height: 135px;
   margin: 30px auto;
   position: relative;
   cursor: pointer;
   transition: transform 0.3s;
 }
 
-.envelope:hover {
+.envelope:hover,
+.envelope:active {
   transform: scale(1.1);
   animation: shake 0.5s;
 }
 
 .envelope-body {
-  width: 200px;
-  height: 120px;
+  width: 180px;
+  height: 108px;
   background: #ff758c;
   border-radius: 10px;
   position: relative;
@@ -193,9 +203,9 @@ button:hover::before {
 .envelope-flap {
   width: 0;
   height: 0;
-  border-left: 100px solid transparent;
-  border-right: 100px solid transparent;
-  border-top: 80px solid #ff4d6d;
+  border-left: 90px solid transparent;
+  border-right: 90px solid transparent;
+  border-top: 72px solid #ff4d6d;
   position: absolute;
   top: 0;
   left: 0;
@@ -209,16 +219,16 @@ button:hover::before {
 
 .letter {
   position: absolute;
-  width: 160px;
-  height: 100px;
+  width: 144px;
+  height: 90px;
   background: white;
-  top: 20px;
-  left: 20px;
+  top: 18px;
+  left: 18px;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 13px;
   color: #ff4d6d;
   font-weight: bold;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
@@ -232,7 +242,7 @@ button:hover::before {
 .buttons {
   margin-top: 30px;
   position: relative;
-  min-height: 80px;
+  min-height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -242,6 +252,7 @@ button:hover::before {
 #noBtn {
   position: absolute;
   transition: all 0.3s ease;
+  touch-action: none;
 }
 
 .hearts {
@@ -251,11 +262,12 @@ button:hover::before {
   pointer-events: none;
   top: 0;
   left: 0;
+  z-index: 1;
 }
 
 .heart {
   position: absolute;
-  font-size: 30px;
+  font-size: 25px;
   animation: floatHeart 4s ease-in-out infinite;
   opacity: 0;
 }
@@ -294,18 +306,20 @@ button:hover::before {
   display: block;
   width: 100%;
   margin: 10px 0;
-  padding: 15px;
+  padding: 14px;
   background: #f8f9fa;
   border: 2px solid transparent;
   border-radius: 15px;
   cursor: pointer;
   transition: all 0.3s;
-  font-size: 15px;
+  font-size: 14px;
   text-align: left;
   line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
 }
 
-.quiz-option:hover {
+.quiz-option:hover,
+.quiz-option:active {
   background: #fff;
   border-color: #ff758c;
   transform: translateX(10px);
@@ -325,19 +339,20 @@ button:hover::before {
 
 .quiz-counter {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 15px;
+  right: 15px;
   background: linear-gradient(135deg, #ff4d6d, #ff758c);
   color: white;
-  padding: 8px 15px;
+  padding: 6px 12px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
   box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+  z-index: 10;
 }
 
 .countdown {
-  font-size: 3em;
+  font-size: 2.5em;
   font-weight: bold;
   color: #ff4d6d;
   margin: 30px 0;
@@ -365,6 +380,7 @@ button:hover::before {
   padding-right: 15px;
   color: white;
   font-weight: bold;
+  font-size: 14px;
 }
 
 .confetti {
@@ -374,6 +390,7 @@ button:hover::before {
   background: #ff4d6d;
   position: absolute;
   animation: confettiFall 3s ease-out forwards;
+  pointer-events: none;
 }
 
 @keyframes confettiFall {
@@ -402,7 +419,7 @@ button:hover::before {
 }
 
 .skull {
-  font-size: 40px;
+  font-size: 30px;
   animation: wiggle 2s ease-in-out infinite;
   display: inline-block;
 }
@@ -411,12 +428,32 @@ button:hover::before {
   display: none !important;
 }
 
+/* Mobile Optimizations */
 @media (max-width: 600px) {
-  h1 { font-size: 1.8em; }
-  h2 { font-size: 1.3em; }
-  p { font-size: 1em; }
-  button { padding: 12px 25px; font-size: 16px; }
-  .quiz-option { font-size: 14px; padding: 12px; }
+  h1 { font-size: 1.6em; }
+  h2 { font-size: 1.25em; }
+  p { font-size: 0.95em; }
+  button { padding: 12px 24px; font-size: 15px; }
+  .quiz-option { font-size: 13px; padding: 12px; }
+  .envelope { width: 160px; height: 120px; }
+  .envelope-body { width: 160px; height: 96px; }
+  .envelope-flap { 
+    border-left: 80px solid transparent;
+    border-right: 80px solid transparent;
+    border-top: 64px solid #ff4d6d;
+  }
+  .letter { width: 128px; height: 80px; font-size: 12px; }
+  .countdown { font-size: 2em; }
+  .card { padding: 25px 20px; }
+  .quiz-counter { font-size: 12px; padding: 5px 10px; }
+}
+
+@media (max-width: 400px) {
+  h1 { font-size: 1.4em; }
+  h2 { font-size: 1.1em; }
+  p { font-size: 0.9em; }
+  button { padding: 10px 20px; font-size: 14px; }
+  .card { padding: 20px 15px; }
 }
 </style>
 </head>
@@ -582,7 +619,6 @@ const noMessages = [
   "My therapist will hear about this 💔"
 ];
 
-// Quiz questions with relatable, funny, and dark humor
 const quizQuestions = [
   {
     question: "What's my favorite activity when you're talking to me?",
@@ -641,7 +677,6 @@ const quizQuestions = [
   }
 ];
 
-// Create floating hearts
 function createHearts() {
   const container = document.getElementById('heartsContainer');
   setInterval(() => {
@@ -655,7 +690,6 @@ function createHearts() {
   }, 300);
 }
 
-// Open envelope animation
 function openEnvelope() {
   const envelope = document.getElementById('envelope');
   envelope.classList.add('opened');
@@ -665,7 +699,6 @@ function openEnvelope() {
   }, 1000);
 }
 
-// Loading animation
 function startLoading() {
   const progressBar = document.getElementById('progressBar');
   const loadingText = document.getElementById('loadingText');
@@ -700,7 +733,6 @@ function startLoading() {
   }, 1000);
 }
 
-// Load quiz question
 function loadQuiz() {
   const quiz = quizQuestions[currentQuiz];
   document.getElementById('quizNumber').textContent = currentQuiz + 1;
@@ -719,7 +751,6 @@ function loadQuiz() {
   });
 }
 
-// Check quiz answer
 function checkQuiz(button, isCorrect) {
   const options = document.querySelectorAll('.quiz-option');
   options.forEach(opt => opt.style.pointerEvents = 'none');
@@ -752,7 +783,6 @@ function checkQuiz(button, isCorrect) {
   }
 }
 
-// Love meter animation
 function animateLoveMeter() {
   const loveFill = document.getElementById('loveFill');
   const loveStatus = document.getElementById('loveStatus');
@@ -787,18 +817,26 @@ function animateLoveMeter() {
   }, 600);
 }
 
-// Moving NO button
+// Mobile-optimized NO button behavior
 const noBtn = document.getElementById("noBtn");
-noBtn.addEventListener("mouseover", () => {
+
+// Handle both hover (desktop) and touch (mobile)
+function moveNoButton() {
   noClickCount++;
   document.getElementById('noCount').textContent = noClickCount;
   
-  const maxX = window.innerWidth - 200;
-  const maxY = window.innerHeight - 100;
+  const container = document.querySelector('.buttons');
+  const containerRect = container.getBoundingClientRect();
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+  
+  const maxX = containerRect.width - btnWidth - 20;
+  const maxY = containerRect.height - btnHeight - 20;
+  
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
   
-  noBtn.style.position = 'fixed';
+  noBtn.style.position = 'absolute';
   noBtn.style.left = x + "px";
   noBtn.style.top = y + "px";
   noBtn.textContent = noMessages[Math.min(noClickCount - 1, noMessages.length - 1)];
@@ -807,9 +845,14 @@ noBtn.addEventListener("mouseover", () => {
   setTimeout(() => {
     document.getElementById('yesBtn').style.animation = '';
   }, 500);
+}
+
+noBtn.addEventListener("mouseover", moveNoButton);
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveNoButton();
 });
 
-// Celebration
 function celebrate() {
   for (let i = 0; i < 150; i++) {
     setTimeout(() => {
@@ -827,7 +870,6 @@ function celebrate() {
   setTimeout(() => goToStage(6), 1000);
 }
 
-// Reveal final message
 function revealFinal() {
   goToStage(7);
   setTimeout(() => {
@@ -835,7 +877,6 @@ function revealFinal() {
   }, 3500);
 }
 
-// Navigate stages
 function goToStage(stageNum) {
   document.querySelectorAll('.stage').forEach(stage => {
     stage.classList.remove('active');
@@ -844,16 +885,15 @@ function goToStage(stageNum) {
   currentStage = stageNum;
 }
 
-// Replay
 function replayJourney() {
   noClickCount = 0;
   currentQuiz = 0;
   document.getElementById('noCount').textContent = '0';
+  document.getElementById('noBtn').style.position = 'absolute';
   goToStage(1);
   document.getElementById('envelope').classList.remove('opened');
 }
 
-// Initialize
 window.onload = function() {
   createHearts();
 };
@@ -861,3 +901,204 @@ window.onload = function() {
 
 </body>
 </html>
+```
+
+---
+
+## **📧 THE PERFECT EMAIL**
+
+### **Option 1: Subtle & Mysterious** 
+
+**Subject:** 📬 Package Delivery Notification (URGENT)
+
+**Body:**
+```
+Hey Navya,
+
+This is an automated notification from the Department of Love & Romance.
+
+A special package has been delivered to your digital mailbox.
+
+⚠️ ACTION REQUIRED: Click below to claim your delivery
+👉 [INSERT LINK HERE]
+
+Note: Unclaimed packages will result in:
+- Increased boyfriend sulking levels
+- Mandatory apology cuddles
+- Extreme emotional damage to sender
+
+Processing Time: 5 minutes
+Difficulty Level: Easy (mostly)
+Side Effects: Possible smiling, blushing, and eye-rolling
+
+This is not spam. Well... it's love spam 💕
+
+- Management
+  (aka Your Favorite Person)
+
+P.S. - Don't make me regret learning HTML for this 😂
+```
+
+---
+
+### **Option 2: Funny & Direct**
+
+**Subject:** URGENT: I Spent 3 Hours on This, Please Click 😭
+
+**Body:**
+```
+Navya,
+
+Remember how I said I was "busy with work stuff"? 
+
+Yeah... I lied. I was making THIS: 👇
+
+👉 [INSERT LINK HERE] 👈
+
+What is it?
+✅ Not a virus (I promise)
+✅ Not a prank (okay maybe 10% prank)
+✅ Not boring (there's a quiz about ME)
+✅ 100% made with questionable coding skills and unlimited love
+
+What will happen when you click?
+🎯 Interactive surprise
+💀 Dark humor (your favorite)
+❤️ A question I've been wanting to ask
+😂 Me exposing my overthinking anxiety
+
+Time Investment: ~5 minutes
+Reward: Making your boyfriend happy + actual surprise
+Risk: You might actually laugh
+
+Fair warning: There's a quiz. You WILL be tested. 
+(Don't worry, I rigged it so you can't fail... mostly)
+
+Click it. Do it. Don't make me beg.
+
+(Okay fine, I'm begging)
+
+Love you ra ❤️
+
+P.S. - I learned HTML, CSS, and JavaScript for this.
+P.P.S. - Okay I already knew those, but I APPLIED them for you
+P.P.P.S. - Just click the damn link 😂
+```
+
+---
+
+### **Option 3: Dramatic & Over-the-Top**
+
+**Subject:** 🚨 BREAKING: Local Boyfriend Does Something Cute 🚨
+
+**Body:**
+```
+📰 THE DAILY NAVYA
+Special Valentine's Edition | February 2025
+
+BREAKING NEWS: 
+Man Spends Entire Evening Creating Digital Surprise Instead of Sleeping
+
+In a shocking turn of events, your boyfriend (yes, me) has created something special that requires your immediate attention.
+
+WHAT WE KNOW:
+- Project codename: "Operation Valentine"
+- Development time: Several hours
+- Lines of code: Too many to count
+- Motivation: Making you smile
+- Success rate: Depends entirely on you clicking this link
+
+👉 CLICK HERE FOR FULL STORY 👈
+[INSERT LINK HERE]
+
+EXPERT ANALYSIS:
+According to relationship experts (me), clicking this link will result in:
+- 87% chance of smiling
+- 92% chance of eye-rolling
+- 100% chance of your boyfriend being happy
+- 76% chance of you calling me "cringe" (lovingly)
+
+VIEWER DISCRETION ADVISED:
+This experience contains:
+⚠️ Excessive cuteness
+⚠️ Dark humor
+⚠️ A rigged quiz
+⚠️ Programmer jokes
+⚠️ Emotional vulnerability
+⚠️ Telugu mixed with English
+
+SOURCES CLOSE TO THE SITUATION (also me) SAY:
+"If she doesn't click this, I'll be dramatically sad for approximately 47 minutes before I start annoying her about it"
+
+Stay tuned for further updates...
+
+With love (and mild desperation),
+Your Favorite Notification
+
+---
+
+DISCLAIMER: This email was written at 2 AM by someone who clearly has too much free time and too many feelings. Any resemblance to actual spam emails is purely coincidental. All emojis used are 100% genuine. No boyfriends were harmed in the making of this email.
+
+P.S. - There's a button that runs away when you try to click it. 
+I'm giving you a heads up because I'm nice like that 😌
+```
+
+---
+
+### **Option 4: The "Recognizing Effort" Special**
+
+**Subject:** I Made You Something (And I'm Low-Key Proud Of It)
+
+**Body:**
+```
+Navya,
+
+So... I did something.
+
+You know how you're always saying I should "express myself more creatively"?
+
+Well, I took that seriously.
+
+I spent [INSERT ACTUAL TIME] hours creating an interactive web experience.
+Just for you.
+Because apparently, I can't just say "Happy Valentine's Day" like a normal person.
+
+What's inside:
+🎨 Custom animations I coded by hand
+💀 Dark humor (your love language)
+🎯 A personality quiz about ME (narcissistic? maybe.)
+💕 Some genuinely sweet stuff (don't tell anyone)
+🤓 Proof that I know way too much HTML/CSS/JavaScript
+
+Click here: 👉 [INSERT LINK] 👈
+
+Full transparency:
+- I debugged this for 2 hours
+- I tested it 47 times
+- I asked myself "is this too much?" approximately 100 times
+- I did it anyway
+- Worth it? You tell me.
+
+What I'm hoping happens:
+✅ You laugh at my jokes
+✅ You appreciate the effort
+✅ You answer my question at the end (hint hint)
+✅ You don't roast me too hard for this
+
+What will probably happen:
+😂 You screenshot the cringe parts
+📱 You send them to your friends
+🙄 You call me extra
+❤️ You secretly love it (I hope)
+
+Requirements:
+- 5 minutes of your time
+- An open mind
+- Your phone/laptop
+- Willingness to humor your boyfriend's weird love language
+
+Love you, ra. Happy Valentine's Day 💖
+
+P.S. - This works on mobile too. I checked. Twice.
+P.P.S. - Okay, 12 times.
+P.P.P.S. - I'm nervous. Just click it. Please. 🥺
