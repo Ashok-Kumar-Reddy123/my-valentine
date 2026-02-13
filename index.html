@@ -1,115 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>For You ❤️</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #ffe6eb, #fff);
-      font-family: 'Arial', sans-serif;
-    }
+<meta charset="UTF-8">
+<title>For You ❤️</title>
 
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-      max-width: 400px;
-      width: 90%;
-    }
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffe6eb, #fff);
+  font-family: Arial, sans-serif;
+}
 
-    h1 {
-      margin-bottom: 10px;
-    }
+.card {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+}
 
-    p {
-      color: #555;
-    }
+h1 {
+  margin-bottom: 10px;
+}
 
-    .buttons {
-      margin-top: 30px;
-      position: relative;
-      height: 60px;
-    }
+p {
+  color: #555;
+}
 
-    button {
-      padding: 12px 25px;
-      font-size: 16px;
-      border: none;
-      border-radius: 25px;
-      cursor: pointer;
-    }
+.buttons {
+  margin-top: 30px;
+  position: relative;
+  height: 60px;
+}
 
-    #yesBtn {
-      background: #ff4d6d;
-      color: white;
-      margin-right: 10px;
-    }
+button {
+  padding: 12px 25px;
+  font-size: 16px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    #noBtn {
-      background: #eee;
-      position: absolute;
-    }
+#yesBtn {
+  background: #ff4d6d;
+  color: white;
+  margin-right: 10px;
+}
 
-    .hidden {
-      display: none;
-    }
-  </style>
+#yesBtn:hover {
+  transform: scale(1.05);
+}
+
+#noBtn {
+  background: #eee;
+  position: absolute;
+}
+
+.hidden {
+  display: none;
+}
+
+#realLoveBtn {
+  margin-top: 15px;
+  background:#ff4d6d;
+  color:white;
+  padding:10px 20px;
+  border:none;
+  border-radius:20px;
+  cursor:pointer;
+}
+
+#realLoveBtn:hover {
+  transform: scale(1.05);
+}
+
+#finalMessage {
+  margin-top:20px;
+  font-size:15px;
+  display:none;
+  line-height:1.6;
+}
+</style>
 </head>
+
 <body>
 
-  <div class="card" id="question">
-    <h1>Hey Navya 💖</h1> <!-- CHANGE NAME HERE -->
-    <p>I’ve been wanting to ask you something…</p>
-    <h2>Will you be my Valentine? 💕</h2>
-    <p><small>Choose wisely (the “No” button is shy 🙈)</small></p>
+<div class="card" id="question">
+  <h1>Hey Navya 💖</h1>
+  <p>I’ve been wanting to ask you something…</p>
+  <h2>Will you be my Valentine? 💕</h2>
+  <p><small>Choose wisely (the “No” button is shy 🙈)</small></p>
 
-    <div class="buttons">
-      <button id="yesBtn">YES ❤️</button>
-      <button id="noBtn">NO 😶</button>
-    </div>
+  <div class="buttons">
+    <button id="yesBtn">YES ❤️</button>
+    <button id="noBtn">NO 😶</button>
   </div>
+</div>
 
-  <div class="card hidden" id="success">
-    <h1>YAY!!! 💖🥹</h1>
-    <p>Best decision ever.</p>
-    <p>I’m really lucky to have you.</p>
-    <h2>I love you ❤️</h2>
-  </div>
+<div class="card hidden" id="success">
+  <h1>YAY!!! 💖🥹</h1>
+  <p>Best decision ever.</p>
+  <p>I’m really lucky to have you.</p>
+  <h2>I love you ❤️</h2>
 
-  <script>
-    const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
-    const question = document.getElementById("question");
-    const success = document.getElementById("success");
+  <p style="margin-top:20px; font-size:15px; line-height:1.6;">
+    Ani… I know konchem force chesi YES click cheyinchanu 😌  
+    Kaani nijamga nuvvante chaala istam ra ❤️  
+    Ah YES ni nijamga istam tho click chesuntey…  
+    kindha unna button click chey.
+  </p>
 
-    const messages = [
-      "Wait… think again 😭",
-      "Are you sure? 👀",
-      "Hey don’t click me 🥺",
-      "Wrong choice 😜",
-      "Nice try 😌"
-    ];
+  <button id="realLoveBtn">
+    Click here if it was real ❤️
+  </button>
 
-    noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * 250;
-      const y = Math.random() * 40;
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-      noBtn.textContent = messages[Math.floor(Math.random() * messages.length)];
-    });
+  <p id="finalMessage">
+    Ekkada vadili velthavo ani konchem bayam ga untundi… 🥺  
+    But anyway naku ee Valentine’s Day ante specific day la anipinchadhu.  
+    Manaki ochhe prathi Valentine okela chuskovali…  
+    not just on one particular day. 💞  
 
-    yesBtn.addEventListener("click", () => {
-      question.classList.add("hidden");
-      success.classList.remove("hidden");
-    });
-  </script>
+    Happy Valentine’s Day ra ❤️✨
+  </p>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const question = document.getElementById("question");
+const success = document.getElementById("success");
+const realLoveBtn = document.getElementById("realLoveBtn");
+const finalMessage = document.getElementById("finalMessage");
+
+const messages = [
+  "Wait… think again 😭",
+  "Are you sure? 👀",
+  "Hey don’t click me 🥺",
+  "Wrong choice 😜",
+  "Nice try 😌"
+];
+
+noBtn.addEventListener("mouseover", () => {
+  const x = Math.random() * 250;
+  const y = Math.random() * 40;
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+  noBtn.textContent = messages[Math.floor(Math.random() * messages.length)];
+});
+
+yesBtn.addEventListener("click", () => {
+  question.classList.add("hidden");
+  success.classList.remove("hidden");
+});
+
+realLoveBtn.addEventListener("click", () => {
+  finalMessage.style.display = "block";
+  realLoveBtn.style.display = "none";
+});
+</script>
 
 </body>
 </html>
